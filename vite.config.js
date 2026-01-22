@@ -6,8 +6,7 @@ export default defineConfig({
   server: {
     host: true, // Ecouter sur toutes les interfaces (0.0.0.0)
     port: 5173,
-    // Ajouter ici les hosts autorises pour le dev
-    // allowedHosts: ['dev.example.com', 'localhost'],
+    allowedHosts: true, // Autoriser tous les hôtes en dev
   },
   plugins: [react()],
 })
