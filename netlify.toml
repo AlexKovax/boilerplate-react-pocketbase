@@ -1,0 +1,28 @@
+# Configuration Netlify
+[build]
+  # Commande pour construire l'application
+  command = "npm run build"
+
+  # Repertoire contenant les fichiers buildes
+  publish = "dist"
+
+# Configuration des redirects pour React Router
+# Toutes les routes doivent pointer vers index.html pour le routing client-side
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers de securite et performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer-when-downgrade"
+
+# Cache pour les assets statiques
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
