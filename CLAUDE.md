@@ -62,12 +62,12 @@ Routes definies dans `src/App.jsx`:
 
 ## Style
 
-Design neo-brutalist avec classes utilitaires:
-- `.neo-box` - Boite avec bordure et ombre
-- `.neo-btn` - Bouton style brutalist
-- `.neo-input` - Champ de formulaire
+Design minimal avec classes utilitaires:
+- `.card` - Conteneur avec fond blanc et bordure
+- `.btn` - Bouton primaire (`.btn-danger` pour les actions destructives)
+- `.input` - Champ de formulaire
 
 Variables CSS dans `src/index.css`:
-- `--primary-color` - Couleur principale (#9062f0)
-- `--border-width` - Epaisseur des bordures (3px)
-- `--shadow-offset` - Decalage des ombres (4px)
+- `--primary-color` - Couleur principale (#3b82f6)
+- `--text-color` - Couleur du texte (#1f2937)
+- `--text-muted` - Texte secondaire (#6b7280)

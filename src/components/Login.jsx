@@ -45,9 +45,9 @@ export default function Login() {
   };
 
   return (
-    <div className="neo-box" style={{ maxWidth: '400px', margin: '2rem auto' }}>
+    <div className="card" style={{ maxWidth: '400px', margin: '2rem auto' }}>
       <h2>Connexion</h2>
-      <p style={{ marginBottom: '1.5rem', color: '#666' }}>
+      <p style={{ marginBottom: '1rem', color: 'var(--text-muted)' }}>
         Connectez-vous pour acceder a l'application.
       </p>
 
@@ -58,7 +58,7 @@ export default function Login() {
           placeholder="Email"
           value={formData.email}
           onChange={handleChange}
-          className="neo-input"
+          className="input"
           required
           autoComplete="email"
         />
@@ -69,7 +69,7 @@ export default function Login() {
           placeholder="Mot de passe"
           value={formData.password}
           onChange={handleChange}
-          className="neo-input"
+          className="input"
           required
           autoComplete="current-password"
         />
@@ -82,7 +82,7 @@ export default function Login() {
 
         <button
           type="submit"
-          className="neo-btn"
+          className="btn"
           style={{ width: '100%' }}
           disabled={isLoading}
         >

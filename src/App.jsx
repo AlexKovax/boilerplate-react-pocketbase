@@ -25,7 +25,7 @@ function App() {
 
             <div className="user-info">
               <span>{user?.email}</span>
-              <button onClick={logout} className="neo-btn logout-btn">
+              <button onClick={logout} className="btn btn-danger">
                 Deconnexion
               </button>
             </div>
