@@ -6,7 +6,7 @@ const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(pb.authStore.model);
   const [token, setToken] = useState(pb.authStore.token);
-  const [isLoading, setIsLoading] = useState(true);
+  const isLoading = false;
 
   // Ecouter les changements du authStore
   useEffect(() => {
@@ -14,9 +14,6 @@ export function AuthProvider({ children }) {
       setToken(newToken);
       setUser(model);
     });
-
-    // Verification initiale de l'authentification
-    setIsLoading(false);
 
     return unsubscribe;
   }, []);
@@ -59,6 +56,7 @@ export function AuthProvider({ children }) {
 }
 
 // Hook personnalise pour utiliser le contexte d'authentification
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
