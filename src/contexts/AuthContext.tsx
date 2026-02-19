@@ -1,12 +1,31 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import PocketBase, { type RecordModel } from 'pocketbase';
 import { pb } from '../lib/pocketbase';
 
-const AuthContext = createContext(null);
+type AuthRecord = RecordModel | null;
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(pb.authStore.model);
+interface LoginResult {
+  success: boolean;
+  user?: RecordModel;
+  error?: string;
+}
+
+interface AuthContextType {
+  user: AuthRecord;
+  token: string;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (email: string, password: string) => Promise<LoginResult>;
+  logout: () => void;
+  pb: PocketBase;
+}
+
+const AuthContext = createContext<AuthContextType | null>(null);
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<AuthRecord>(pb.authStore.record);
   const [token, setToken] = useState(pb.authStore.token);
-  const [isLoading, setIsLoading] = useState(true);
+  const isLoading = false;
 
   // Ecouter les changements du authStore
   useEffect(() => {
@@ -15,23 +34,18 @@ export function AuthProvider({ children }) {
       setUser(model);
     });
 
-    // Verification initiale de l'authentification
-    setIsLoading(false);
-
     return unsubscribe;
   }, []);
 
   // Connexion avec email/mot de passe
-  const login = async (email, password) => {
+  const login = async (email: string, password: string): Promise<LoginResult> => {
     try {
       const authData = await pb.collection('users').authWithPassword(email, password);
       return { success: true, user: authData.record };
     } catch (error) {
       console.error('Login error:', error);
-      return {
-        success: false,
-        error: error.message || 'Echec de la connexion. Verifiez vos identifiants.'
-      };
+      const message = error instanceof Error ? error.message : 'Echec de la connexion. Verifiez vos identifiants.';
+      return { success: false, error: message };
     }
   };
 
@@ -39,26 +53,27 @@ export function AuthProvider({ children }) {
   const logout = () => {
     pb.authStore.clear();
     setUser(null);
-    setToken(null);
+    setToken('');
   };
 
   // Verifier si l'utilisateur est authentifie
   const isAuthenticated = !!token && !!user;
 
-  const value = {
+  const value: AuthContextType = {
     user,
     token,
     isAuthenticated,
     isLoading,
     login,
     logout,
-    pb, // Exposer l'instance pb pour les operations sur les collections
+    pb,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 // Hook personnalise pour utiliser le contexte d'authentification
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
